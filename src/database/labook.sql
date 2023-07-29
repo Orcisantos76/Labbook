@@ -1,19 +1,52 @@
 -- Active: 1690566160860@@127.0.0.1@3306
-import knex from "knex";
+CREATE TABLE users(
+    id TEXT UNIQUE PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role TEXT NOT NULL,
+    created_at TEXT DEFAULT(datetime('now', 'localtime'))
+);
 
-export abstract class  BaseDatabase {
-    protected static connection = knex({
-        client: "sqlite3",
-        connection:{
-            filename: "./src/database/labook.db",
-        },
-        useNullAsDefault: true,
-        pool:{
-            min: 0,
-            max: 1,
-            afterCreate:(conn: any, cb: any)=>{
-                conn.run("PRAGMA foreign_keys = ON", cb)
-            }
-        }
-    })
-}
+DROP TABLE users;
+SELECT * FROM users;
+INSERT INTO users(id, name, email, password,role)
+    VALUES
+        ('u001','Orci','orci@email','orci1234','adm');
+
+CREATE Table posts(
+    id TEXT UNIQUE PRIMARY KEY,
+    content TEXT NOT NULL,
+    likes INTEGER NOT NULL,
+    dislikes INTEGER NOT NULL,
+    created_at TEXT DEFAULT(datetime('now', 'localtime')),
+    updated_at TEXT,
+    creator_id TEXT NOT NULL,
+        FOREIGN KEY (creator_id) REFERENCES users(id)
+            ON UPDATE CASCADE
+            ON DELETE CASCADE
+);
+DROP TABLE posts;
+SELECT * FROM posts;
+INSERT INTO posts(id, content,likes,dislikes, creator_id)
+    VALUES
+        ('p001','conteudo qualquer',0,0,'u001');
+
+CREATE TABLE like_dislike (
+    user_id TEXT NOT NULL,    
+    post_id TEXT NOT NULL,    
+    like INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) 
+        ON UPDATE CASCADE 
+        ON DELETE CASCADE,
+        FOREIGN KEY (post_id) REFERENCES posts(id) 
+        ON UPDATE CASCADE 
+        ON DELETE CASCADE
+);
+DROP TABLE like_dislike;
+SELECT * FROM like_dislike;
+
+
+INSERT INTO like_dislike(user_id, post_id, like)
+    VALUES
+        ('u001','p001',1);
