@@ -9,5 +9,5 @@ app.listen(3003,()=>{
 })
 
 app.get("/ping", (req:Request, res: Response)=>{
-    res.send("Conectado com sucesso")
+    res.send("Conectado com sucesso Labook")
 })
