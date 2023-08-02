@@ -1,51 +1,98 @@
-export class User{
+export enum USER_ROLES {
+    NORMAL = "NORMAL",
+    ADMIN = "ADMIN",
+}
+export interface UserDB {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    role: USER_ROLES;
+    created_at: string;
+}
+
+export interface UserModel {
+    id: string;
+    name: string;
+    email: string;
+    role: USER_ROLES;
+    createdAt: string;
+}
+export interface TokenPayload {
+    id: string;
+    name: string;
+    role: USER_ROLES;
+}
+
+
+export class User {
     constructor(
         private id: string,
         private name: string,
         private email: string,
         private password: string,
-        private role: string,
-        private created_at: string
-    ){}
-    public getId(): string{
-        return this.id
+        private role: USER_ROLES,
+        private createdAt: string
+    ) { }
+    public getId(): string {
+        return this.id;
     }
-    public setId(value: string): void{
-        this.id = value
-    }
-
-    public getName(): string{
-        return this.name
-    }
-    public setName(value: string): void{
-        this.name = value
+    public setId(value: string): void {
+        this.id = value;
     }
 
-    public getEmail(): string{
-        return this.email
+    public getName(): string {
+        return this.name;
     }
-    public setEmail(value: string): void{
-        this.email = value
-    }
-
-    public getPassword(): string{
-        return this.password
-    }
-    public setPassword(value: string): void{
-        this.password = value
+    public setName(value: string): void {
+        this.name = value;
     }
 
-    public getRole(): string{
-        return this.role
+    public getEmail(): string {
+        return this.email;
     }
-    public setRole(value: string): void{
-        this.role = value
+    public setEmail(value: string): void {
+        this.email = value;
     }
 
-    public getCreated_at(): string{
-        return this.created_at
+    public getPassword(): string {
+        return this.password;
     }
-    public setCreated_at(value: string): void{
-        this.created_at = value
+    public setPassword(value: string): void {
+        this.password = value;
+    }
+
+    public getRole(): USER_ROLES {
+        return this.role;
+    }
+    public setRole(value: USER_ROLES) {
+        this.role = value;
+    }
+
+    public getCreated_at(): string {
+        return this.createdAt;
+    }
+    public setCreated_at(value: string): void {
+        this.createdAt = value;
+    }
+
+    public toDBModel(): UserDB {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            role: this.role,
+            created_at: this.createdAt,
+        };
+    }
+    public toBusinessModel(): UserModel {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            role: this.role,
+            createdAt: this.createdAt,
+        };
     }
 }
